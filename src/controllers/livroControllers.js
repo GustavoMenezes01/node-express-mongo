@@ -52,8 +52,19 @@ class LivroController {
         } catch (erro) {
             res.status(500).json({message: `${erro.message}} - falha ao deletar livros`});
         }
+    };
+
+    static async listarLivrosPorTitulo (req, res) {
+        const titulo = req.query.titulo
+        try {
+            const LivrosPorTitulo = await livro.find({titulo: titulo})
+            res.status(200).json(LivrosPorTitulo);
+        } catch (erro) {
+            res.status(500).json({message: `${erro.message}} - falha ao listar livros por titulo`});
+        }
     }
 
-}
+};
+
 
 export default LivroController;

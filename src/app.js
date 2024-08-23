@@ -1,6 +1,6 @@
 import express from "express";
 import connectNaDatabase from "./config/dbConnect.js";
-import livro from "./models/Livros.js";
+import routes from "./routes/index.js";
  
 const conexao = await connectNaDatabase();
 
@@ -13,26 +13,7 @@ conexao.once("open", () => {
 })
 
 const app = express();
-app.use(express.json());
-
-app.get("/", (req, res) => {
-    res.status(200).send("curos de node,js utilizando o express")
-})
-
-app.get("/livros", async (req, res) => {
-    const listaLivros = await livro.find({});
-    res.status(200).json(listaLivros);
-})
-
-app.get("/livros/:id", (req, res) => {
-    const index = findBook(req.params.id);
-    res.status(200).json(books[index]);
-})
-
-app.post("/livros", (req, res) => {
-    books.push(req.body);
-    res.status(201).send("livro cadastrado com sucesso")
-})
+routes(app);
 
 app.put("/livros/:id", (req, res) => {
     const index = findBook(req.params.id);
@@ -47,5 +28,3 @@ app.delete("/livros/:id", (req, res) => {
 })
 
 export default app;
-
-// mongodb+srv://admin:admin123@cluster0.xtd5j.mongodb.net/?retryWrites=true&w=majority

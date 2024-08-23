@@ -1,5 +1,6 @@
 import express from "express";
 import connectNaDatabase from "./config/dbConnect.js";
+import livro from "./models/Livros.js";
  
 const conexao = await connectNaDatabase();
 
@@ -14,29 +15,13 @@ conexao.once("open", () => {
 const app = express();
 app.use(express.json());
 
-const books = [
-    {
-        id: 1,
-        titulo: "Casais inteligentes enriquecem juntos"
-    },
-    {
-        id:2,
-        titulo: "A cabana"
-    }
-]
-
-function findBook(id) {
-    return books.findIndex(book => {
-        return book.id === Number(id);
-    })
-}
-
 app.get("/", (req, res) => {
     res.status(200).send("curos de node,js utilizando o express")
 })
 
-app.get("/livros", (req, res) => {
-    res.status(200).json(books);
+app.get("/livros", async (req, res) => {
+    const listaLivros = await livro.find({});
+    res.status(200).json(listaLivros);
 })
 
 app.get("/livros/:id", (req, res) => {
